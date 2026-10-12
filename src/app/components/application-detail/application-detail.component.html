@@ -1,0 +1,57 @@
+@if (app(); as a) {
+  <a class="back" routerLink="/applications">Back to applications</a>
+
+  <div class="page-head">
+    <div>
+      <h1>{{ a.company }}</h1>
+      <p class="muted">{{ a.role }}</p>
+    </div>
+    <app-status-badge [status]="a.status" />
+  </div>
+
+  <dl class="facts">
+    <div>
+      <dt>Location</dt>
+      <dd>{{ a.location || 'Not set' }}</dd>
+    </div>
+    <div>
+      <dt>{{ a.status === 'Saved' ? 'Saved' : 'Applied' }}</dt>
+      <dd>{{ a.appliedOn }} ({{ a.appliedOn | daysAgo }})</dd>
+    </div>
+    <div>
+      <dt>Job posting</dt>
+      <dd>
+        @if (a.link) {
+          <a [href]="a.link" target="_blank" rel="noopener noreferrer">Open the posting</a>
+        } @else {
+          Not added
+        }
+      </dd>
+    </div>
+    <div>
+      <dt>Notes</dt>
+      <dd class="notes">{{ a.notes || 'No notes yet.' }}</dd>
+    </div>
+  </dl>
+
+  <div class="actions">
+    <div class="field inline">
+      <label for="status">Status</label>
+      <select id="status" [value]="a.status" (change)="onStatusChange($event)">
+        @for (status of statuses; track status) {
+          <option [value]="status" [selected]="status === a.status">{{ status }}</option>
+        }
+      </select>
+    </div>
+    <a class="btn" [routerLink]="['/applications', a.id, 'edit']">Edit</a>
+    <button type="button" class="btn btn-danger" (click)="remove()">Delete</button>
+  </div>
+} @else if (loading()) {
+  <p class="muted" role="status">Loading...</p>
+} @else {
+  <div class="empty">
+    <h2>Application not found</h2>
+    <p>It may have been deleted.</p>
+    <a class="btn btn-primary" routerLink="/applications">Back to applications</a>
+  </div>
+}

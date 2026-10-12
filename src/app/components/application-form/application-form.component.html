@@ -1,0 +1,69 @@
+<div class="page-head">
+  <h1>{{ editingId ? 'Edit application' : 'Add application' }}</h1>
+</div>
+
+<form class="form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <div class="field">
+    <label for="company">Company</label>
+    <input id="company" type="text" formControlName="company" [attr.aria-invalid]="showError('company')" />
+    @if (showError('company')) {
+      <p class="field-error">Enter the company name (at least 2 characters).</p>
+    }
+  </div>
+
+  <div class="field">
+    <label for="role">Role</label>
+    <input id="role" type="text" formControlName="role" [attr.aria-invalid]="showError('role')" />
+    @if (showError('role')) {
+      <p class="field-error">Enter the job title.</p>
+    }
+  </div>
+
+  <div class="field">
+    <label for="location">Location</label>
+    <input id="location" type="text" formControlName="location" />
+  </div>
+
+  <div class="form__pair">
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" formControlName="status">
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="appliedOn">Date</label>
+      <input id="appliedOn" type="date" formControlName="appliedOn" [max]="today" [attr.aria-invalid]="showError('appliedOn')" />
+      @if (showError('appliedOn')) {
+        <p class="field-error">
+          {{ form.controls.appliedOn.hasError('future') ? 'The date can not be in the future.' : 'Choose a date.' }}
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="link">Job posting link</label>
+    <input id="link" type="url" formControlName="link" placeholder="https://" [attr.aria-invalid]="showError('link')" />
+    @if (showError('link')) {
+      <p class="field-error">Enter a full link that starts with http:// or https://.</p>
+    }
+  </div>
+
+  <div class="field">
+    <label for="notes">Notes</label>
+    <textarea id="notes" rows="4" formControlName="notes"></textarea>
+    <p class="hint">{{ form.controls.notes.value.length }} / 500</p>
+    @if (showError('notes')) {
+      <p class="field-error">Notes can be up to 500 characters.</p>
+    }
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-primary">{{ editingId ? 'Save changes' : 'Add application' }}</button>
+    <a class="btn" [routerLink]="editingId ? ['/applications', editingId] : ['/applications']">Cancel</a>
+  </div>
+</form>

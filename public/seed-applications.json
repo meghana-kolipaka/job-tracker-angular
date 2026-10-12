@@ -1,0 +1,8 @@
+[
+  { "id": "seed-1", "company": "Northwind Labs", "role": "UI Developer", "location": "Hyderabad", "status": "Interview", "appliedOn": "2026-10-02", "link": "https://example.com/jobs/ui-developer", "notes": "Round 1 cleared. Revise Angular components, services and routing." },
+  { "id": "seed-2", "company": "Bluefin Systems", "role": "Frontend Engineer", "location": "Bengaluru (hybrid)", "status": "Applied", "appliedOn": "2026-10-06", "link": "", "notes": "Applied through the company careers page." },
+  { "id": "seed-3", "company": "Lumen Retail Tech", "role": "Associate Software Engineer", "location": "Chennai", "status": "Applied", "appliedOn": "2026-09-28", "link": "", "notes": "" },
+  { "id": "seed-4", "company": "Harbor Analytics", "role": "Junior Web Developer", "location": "Remote", "status": "Saved", "appliedOn": "2026-10-09", "link": "https://example.com/jobs/junior-web", "notes": "Apply by Friday. Tailor the summary to their stack." },
+  { "id": "seed-5", "company": "Kestrel Software", "role": "Python Developer", "location": "Pune", "status": "Rejected", "appliedOn": "2026-09-15", "link": "", "notes": "Asked for 2+ years of experience." },
+  { "id": "seed-6", "company": "Orbit Cloud", "role": "Trainee Engineer", "location": "Hyderabad", "status": "Offer", "appliedOn": "2026-09-10", "link": "", "notes": "Offer letter received. Reply within a week." }
+]

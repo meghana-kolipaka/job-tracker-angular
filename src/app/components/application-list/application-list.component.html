@@ -1,0 +1,81 @@
+<div class="page-head">
+  <h1>Applications</h1>
+  <a class="btn btn-primary" routerLink="/applications/new">Add application</a>
+</div>
+
+@if (loading()) {
+  <p class="muted" role="status">Loading applications...</p>
+} @else {
+  @if (loadError(); as message) {
+    <p class="notice" role="alert">{{ message }}</p>
+  }
+
+  <section aria-label="Pipeline summary" class="pipeline-card">
+    <div class="pipeline" role="img" [attr.aria-label]="counts().All + ' applications in total'">
+      @for (seg of segments(); track seg.status) {
+        <span class="pipeline__seg" [attr.data-status]="seg.status" [style.flex-grow]="seg.count"></span>
+      }
+    </div>
+
+    <div class="chips" role="group" aria-label="Filter by status">
+      <button type="button" class="chip" [attr.aria-pressed]="statusFilter() === 'All'" (click)="setFilter('All')">
+        All <span class="chip__count">{{ counts().All }}</span>
+      </button>
+      @for (status of statuses; track status) {
+        <button
+          type="button"
+          class="chip"
+          [attr.data-status]="status"
+          [attr.aria-pressed]="statusFilter() === status"
+          (click)="setFilter(status)"
+        >
+          <span class="chip__dot"></span>{{ status }} <span class="chip__count">{{ counts()[status] }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <div class="field search">
+    <label for="search">Search by company, role or location</label>
+    <input id="search" type="search" [formControl]="search" autocomplete="off" />
+  </div>
+
+  @if (visible().length) {
+    <ul class="rows">
+      @for (app of visible(); track app.id) {
+        <li class="row">
+          <div class="row__main">
+            <a class="row__company" [routerLink]="['/applications', app.id]">{{ app.company }}</a>
+            <span class="row__role">{{ app.role }}</span>
+          </div>
+          <div class="row__place">{{ app.location || 'Location not set' }}</div>
+          <div class="row__date">{{ app.status === 'Saved' ? 'Saved' : 'Applied' }} {{ app.appliedOn | daysAgo }}</div>
+          <div class="row__status">
+            <label class="visually-hidden" [for]="'status-' + app.id">Change status for {{ app.company }}</label>
+            <select [id]="'status-' + app.id" [attr.data-status]="app.status" [value]="app.status" (change)="onStatusChange(app.id, $event)">
+              @for (status of statuses; track status) {
+                <option [value]="status" [selected]="status === app.status">{{ status }}</option>
+              }
+            </select>
+          </div>
+        </li>
+      }
+    </ul>
+  } @else if (counts().All === 0) {
+    <div class="empty">
+      <h2>No applications yet</h2>
+      <p>Add the first job you applied to and track it from here.</p>
+      <a class="btn btn-primary" routerLink="/applications/new">Add application</a>
+    </div>
+  } @else {
+    <div class="empty">
+      <h2>No matches</h2>
+      <p>Try a different search or choose All to see every application.</p>
+    </div>
+  }
+
+  <p class="footnote">
+    Data is saved in this browser only.
+    <button type="button" class="btn-link" (click)="resetSampleData()">Reset to sample data</button>
+  </p>
+}
